@@ -1,0 +1,19 @@
+meta {
+  name: Create Member (ENTERPRISE)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/members
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Claire Leblanc",
+    "email": "claire.leblanc@email.com",
+    "subscriptionType": "ENTERPRISE"
+  }
+}

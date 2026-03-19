@@ -1,0 +1,22 @@
+meta {
+  name: Create Room - Meeting Room Paris
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/rooms
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Salle de Réunion Paris Sud",
+    "city": "Paris",
+    "capacity": 8,
+    "type": "MEETING_ROOM",
+    "hourlyRate": 55.00,
+    "available": true
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Create Reservation - Suspended Member (must fail)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "roomId": 3,
+    "memberId": 1,
+    "startDateTime": "2026-03-21T09:00:00",
+    "endDateTime": "2026-03-21T11:00:00"
+  }
+}

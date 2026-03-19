@@ -1,0 +1,11 @@
+meta {
+  name: Update Room Availability
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/api/rooms/1/availability?available=false
+  body: none
+  auth: none
+}

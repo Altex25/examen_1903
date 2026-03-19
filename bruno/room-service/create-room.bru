@@ -1,0 +1,22 @@
+meta {
+  name: Create Room
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/rooms
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Salle Alpha",
+    "city": "Paris",
+    "capacity": 10,
+    "type": "MEETING_ROOM",
+    "hourlyRate": 50.00,
+    "available": true
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Create Reservation - Occupied Room (must fail)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "roomId": 1,
+    "memberId": 2,
+    "startDateTime": "2026-03-20T09:00:00",
+    "endDateTime": "2026-03-20T11:00:00"
+  }
+}

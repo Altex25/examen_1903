@@ -1,0 +1,22 @@
+meta {
+  name: Create Room - Private Office Bordeaux
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/rooms
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bureau Privé Bordeaux",
+    "city": "Bordeaux",
+    "capacity": 4,
+    "type": "PRIVATE_OFFICE",
+    "hourlyRate": 80.00,
+    "available": true
+  }
+}

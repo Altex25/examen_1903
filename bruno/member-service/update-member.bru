@@ -1,0 +1,19 @@
+meta {
+  name: Update Member
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/api/members/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Alice Dupont",
+    "email": "alice.dupont@newemail.com",
+    "subscriptionType": "PRO"
+  }
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Create Room - Open Space Lyon
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/rooms
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Open Space Lyon Centre",
+    "city": "Lyon",
+    "capacity": 20,
+    "type": "OPEN_SPACE",
+    "hourlyRate": 30.00,
+    "available": true
+  }
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Create Member (PRO)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/members
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Bob Martin",
+    "email": "bob.martin@email.com",
+    "subscriptionType": "PRO"
+  }
+}
