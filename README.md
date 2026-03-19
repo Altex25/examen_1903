@@ -263,6 +263,20 @@ Important :
 
 ---
 
+## Postman — collection de tests
+
+Une collection Postman est disponible ici :
+`postman/coworking-tests.postman_collection.json`
+
+Pour l’utiliser :
+1. Ouvrez Postman
+2. `Import` → sélectionnez le fichier JSON
+3. Exécutez les requêtes via la gateway `http://localhost:8080`
+
+La collection contient des scénarios complets (salles, membres, réservations, quota/suspended, Kafka).
+
+---
+
 ## Étape 6 — Arrêter l'application
 
 Pour arrêter proprement :

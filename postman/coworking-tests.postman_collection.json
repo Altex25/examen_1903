@@ -1,0 +1,511 @@
+{
+  "info": {
+    "name": "Coworking - Tests (Gateway)",
+    "_postman_id": "c6c0b4d2-8f5d-4ad6-9f3f-1a9e8d0c2db2",
+    "description": "Collection Postman pour tester l'application via API Gateway (http://localhost:8080).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8080"}
+  ],
+  "item": [
+    {
+      "name": "01 - Salles (Room)",
+      "item": [
+        {
+          "name": "Create Room - Salle Alpha (MEETING_ROOM)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/rooms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Salle Alpha\",\n  \"city\": \"Paris\",\n  \"capacity\": 10,\n  \"type\": \"MEETING_ROOM\",\n  \"hourlyRate\": 50.00,\n  \"available\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Room create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('roomIdSalleAlpha', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Room - Open Space Lyon (OPEN_SPACE)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/rooms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Open Space Lyon\",\n  \"city\": \"Lyon\",\n  \"capacity\": 20,\n  \"type\": \"OPEN_SPACE\",\n  \"hourlyRate\": 30.00,\n  \"available\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Room create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('roomIdLyon', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Room - Private Office Bordeaux (PRIVATE_OFFICE)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/rooms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bureau Privé Bordeaux\",\n  \"city\": \"Bordeaux\",\n  \"capacity\": 4,\n  \"type\": \"PRIVATE_OFFICE\",\n  \"hourlyRate\": 80.00,\n  \"available\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Room create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('roomIdBordeaux', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Room - Meeting Paris (MEETING_ROOM)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/rooms",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Salle de Réunion Paris Sud\",\n  \"city\": \"Paris\",\n  \"capacity\": 8,\n  \"type\": \"MEETING_ROOM\",\n  \"hourlyRate\": 55.00,\n  \"available\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Room create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('roomIdParis', j.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - Membres (Member)",
+      "item": [
+        {
+          "name": "Create Member - BASIC",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/members",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Alice Dupont\",\n  \"email\": \"alice@email.com\",\n  \"subscriptionType\": \"BASIC\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Member create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('memberIdBasic', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Member - PRO",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/members",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Bob Martin\",\n  \"email\": \"bob.martin@email.com\",\n  \"subscriptionType\": \"PRO\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Member create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('memberIdPro', j.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Member - ENTERPRISE",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/members",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Claire Leblanc\",\n  \"email\": \"claire.leblanc@email.com\",\n  \"subscriptionType\": \"ENTERPRISE\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Member create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('memberIdEnterprise', j.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - Réservation 1 (CONFIRMED) + vérif dispo",
+      "item": [
+        {
+          "name": "Create Reservation 1",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/reservations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": {{roomIdSalleAlpha}},\n  \"memberId\": {{memberIdBasic}},\n  \"startDateTime\": \"2026-03-20T09:00:00\",\n  \"endDateTime\": \"2026-03-20T11:00:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Reservation create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('reservationId1', j.id);",
+                  "pm.expect(j.status).to.eql('CONFIRMED');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Check Room Availability (roomIdSalleAlpha should be false)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/rooms/{{roomIdSalleAlpha}}/available"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Room available should be false', function () {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - Réservation sur salle occupée (doit échouer)",
+      "item": [
+        {
+          "name": "Create Reservation on Occupied Room (must fail)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/reservations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": {{roomIdSalleAlpha}},\n  \"memberId\": {{memberIdPro}},\n  \"startDateTime\": \"2026-03-20T10:00:00\",\n  \"endDateTime\": \"2026-03-20T12:00:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Reservation on occupied room should fail with 500', function () {",
+                  "  pm.expect(pm.response.code).to.eql(500);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - Réservation 2 pour quota BASIC + suspension",
+      "item": [
+        {
+          "name": "Create Second Reservation for BASIC (reservation 2)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/api/reservations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roomId\": {{roomIdLyon}},\n  \"memberId\": {{memberIdBasic}},\n  \"startDateTime\": \"2026-03-20T14:00:00\",\n  \"endDateTime\": \"2026-03-20T16:00:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Reservation2 create status is 201', function () { pm.response.to.have.status(201); });",
+                  "const j = pm.response.json();",
+                  "pm.environment.set('reservationId2', j.id);",
+                  "pm.expect(j.status).to.eql('CONFIRMED');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Check Member Suspended (memberIdBasic should be true)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/members/{{memberIdBasic}}/suspended"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('suspended should be true', function () {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - Annuler Reservation 2 (désuspension)",
+      "item": [
+        {
+          "name": "Cancel Reservation 2 (PUT /cancel)",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/reservations/{{reservationId2}}/cancel"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Cancel reservation2 should return 200', function () { pm.response.to.have.status(200); });",
+                  "const j = pm.response.json();",
+                  "pm.expect(j.status).to.eql('CANCELLED');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Check Member Suspended again (should be false)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/members/{{memberIdBasic}}/suspended"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('suspended should be false after cancel', function () {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Kafka: Suppression salle (room-deleted)",
+      "item": [
+        {
+          "name": "Delete Room (roomIdSalleAlpha)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/rooms/{{roomIdSalleAlpha}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delete room should return 204', function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wait ~1.5s (synchronous busy wait)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Busy wait 1500ms",
+                  "const start = Date.now();",
+                  "while (Date.now() - start < 1500) {}",
+                  "pm.test('Wait step executed', function () { pm.expect(true).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Reservations (check room deletions are CANCELLED)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('At least one reservation exists for deleted room', function () {",
+                  "  const r = pm.response.json();",
+                  "  const roomId = Number(pm.environment.get('roomIdSalleAlpha'));",
+                  "  const matches = r.filter(x => x.roomId === roomId);",
+                  "  pm.expect(matches.length).to.be.at.least(1);",
+                  "  matches.forEach(x => pm.expect(x.status).to.eql('CANCELLED'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "08 - Kafka: Suppression membre (member-deleted)",
+      "item": [
+        {
+          "name": "Delete Member (memberIdBasic)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/members/{{memberIdBasic}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Delete member should return 204', function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Wait ~1.5s (busy wait)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const start = Date.now();",
+                  "while (Date.now() - start < 1500) {}",
+                  "pm.test('Wait step executed', function () { pm.expect(true).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Reservations (expect empty array)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/reservations"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('All reservations should be deleted for member', function () {",
+                  "  const r = pm.response.json();",
+                  "  pm.expect(Array.isArray(r)).to.eql(true);",
+                  "  pm.expect(r.length).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
