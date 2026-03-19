@@ -51,22 +51,12 @@ public class MemberService {
         return findById(id).isSuspended();
     }
 
-    /**
-     * Incrémente le compteur de réservations actives.
-     * La mise à jour du champ suspended est gérée de façon asynchrone via Kafka
-     * par le Reservation Service qui publie un événement member-status.
-     */
     public Member incrementActiveBookings(Long id) {
         Member member = findById(id);
         member.setActiveBookings(member.getActiveBookings() + 1);
         return memberRepository.save(member);
     }
 
-    /**
-     * Décrémente le compteur de réservations actives.
-     * La mise à jour du champ suspended est gérée de façon asynchrone via Kafka
-     * par le Reservation Service qui publie un événement member-status.
-     */
     public Member decrementActiveBookings(Long id) {
         Member member = findById(id);
         int updated = Math.max(0, member.getActiveBookings() - 1);

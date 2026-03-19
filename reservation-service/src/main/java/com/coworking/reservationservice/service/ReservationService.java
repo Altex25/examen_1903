@@ -7,6 +7,8 @@ import com.coworking.reservationservice.entity.Reservation;
 import com.coworking.reservationservice.entity.ReservationStatus;
 import com.coworking.reservationservice.kafka.ReservationEventProducer;
 import com.coworking.reservationservice.repository.ReservationRepository;
+import com.coworking.reservationservice.state.ReservationState;
+import com.coworking.reservationservice.state.ReservationStateFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,6 @@ public class ReservationService {
         roomClient.updateAvailability(reservation.getRoomId(), false);
         MemberBookingDto member = memberClient.incrementBookings(reservation.getMemberId());
 
-        // Si le quota est atteint, publier un événement Kafka pour suspendre le membre
         if (member.getActiveBookings() >= member.getMaxConcurrentBookings()) {
             eventProducer.publishMemberStatus(reservation.getMemberId(), true);
         }
@@ -54,17 +55,15 @@ public class ReservationService {
 
     public Reservation cancel(Long id) {
         Reservation reservation = findById(id);
-        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-            throw new IllegalStateException("Only CONFIRMED reservations can be cancelled");
-        }
 
-        reservation.setStatus(ReservationStatus.CANCELLED);
+        ReservationState state = ReservationStateFactory.getState(reservation.getStatus());
+        state.cancel(reservation); // lève IllegalStateException si transition invalide
+
         Reservation saved = reservationRepository.save(reservation);
 
         roomClient.updateAvailability(reservation.getRoomId(), true);
         MemberBookingDto member = memberClient.decrementBookings(reservation.getMemberId());
 
-        // Si le membre était suspendu et repasse sous son quota, publier un événement Kafka
         if (member.getActiveBookings() < member.getMaxConcurrentBookings()) {
             eventProducer.publishMemberStatus(reservation.getMemberId(), false);
         }
@@ -74,17 +73,15 @@ public class ReservationService {
 
     public Reservation complete(Long id) {
         Reservation reservation = findById(id);
-        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-            throw new IllegalStateException("Only CONFIRMED reservations can be completed");
-        }
 
-        reservation.setStatus(ReservationStatus.COMPLETED);
+        ReservationState state = ReservationStateFactory.getState(reservation.getStatus());
+        state.complete(reservation); // lève IllegalStateException si transition invalide
+
         Reservation saved = reservationRepository.save(reservation);
 
         roomClient.updateAvailability(reservation.getRoomId(), true);
         MemberBookingDto member = memberClient.decrementBookings(reservation.getMemberId());
 
-        // Si le membre était suspendu et repasse sous son quota, publier un événement Kafka
         if (member.getActiveBookings() < member.getMaxConcurrentBookings()) {
             eventProducer.publishMemberStatus(reservation.getMemberId(), false);
         }
