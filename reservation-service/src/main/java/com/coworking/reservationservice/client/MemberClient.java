@@ -1,5 +1,6 @@
 package com.coworking.reservationservice.client;
 
+import com.coworking.reservationservice.dto.MemberBookingDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +13,8 @@ public interface MemberClient {
     boolean isSuspended(@PathVariable("id") Long id);
 
     @PostMapping("/api/members/{id}/booking/increment")
-    void incrementBookings(@PathVariable("id") Long id);
+    MemberBookingDto incrementBookings(@PathVariable("id") Long id);
 
     @PostMapping("/api/members/{id}/booking/decrement")
-    void decrementBookings(@PathVariable("id") Long id);
+    MemberBookingDto decrementBookings(@PathVariable("id") Long id);
 }

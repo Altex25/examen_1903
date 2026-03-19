@@ -1,6 +1,7 @@
 package com.coworking.roomservice.service;
 
 import com.coworking.roomservice.entity.Room;
+import com.coworking.roomservice.kafka.RoomEventProducer;
 import com.coworking.roomservice.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final RoomEventProducer roomEventProducer;
 
     public List<Room> findAll() {
         return roomRepository.findAll();
@@ -38,7 +40,9 @@ public class RoomService {
     }
 
     public void delete(Long id) {
+        findById(id);
         roomRepository.deleteById(id);
+        roomEventProducer.publishRoomDeleted(id);
     }
 
     public boolean isAvailable(Long id) {

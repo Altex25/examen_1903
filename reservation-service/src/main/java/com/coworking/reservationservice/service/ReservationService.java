@@ -2,8 +2,10 @@ package com.coworking.reservationservice.service;
 
 import com.coworking.reservationservice.client.MemberClient;
 import com.coworking.reservationservice.client.RoomClient;
+import com.coworking.reservationservice.dto.MemberBookingDto;
 import com.coworking.reservationservice.entity.Reservation;
 import com.coworking.reservationservice.entity.ReservationStatus;
+import com.coworking.reservationservice.kafka.ReservationEventProducer;
 import com.coworking.reservationservice.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final RoomClient roomClient;
     private final MemberClient memberClient;
+    private final ReservationEventProducer eventProducer;
 
     public List<Reservation> findAll() {
         return reservationRepository.findAll();
@@ -39,7 +42,12 @@ public class ReservationService {
         Reservation saved = reservationRepository.save(reservation);
 
         roomClient.updateAvailability(reservation.getRoomId(), false);
-        memberClient.incrementBookings(reservation.getMemberId());
+        MemberBookingDto member = memberClient.incrementBookings(reservation.getMemberId());
+
+        // Si le quota est atteint, publier un événement Kafka pour suspendre le membre
+        if (member.getActiveBookings() >= member.getMaxConcurrentBookings()) {
+            eventProducer.publishMemberStatus(reservation.getMemberId(), true);
+        }
 
         return saved;
     }
@@ -54,7 +62,12 @@ public class ReservationService {
         Reservation saved = reservationRepository.save(reservation);
 
         roomClient.updateAvailability(reservation.getRoomId(), true);
-        memberClient.decrementBookings(reservation.getMemberId());
+        MemberBookingDto member = memberClient.decrementBookings(reservation.getMemberId());
+
+        // Si le membre était suspendu et repasse sous son quota, publier un événement Kafka
+        if (member.getActiveBookings() < member.getMaxConcurrentBookings()) {
+            eventProducer.publishMemberStatus(reservation.getMemberId(), false);
+        }
 
         return saved;
     }
@@ -69,7 +82,12 @@ public class ReservationService {
         Reservation saved = reservationRepository.save(reservation);
 
         roomClient.updateAvailability(reservation.getRoomId(), true);
-        memberClient.decrementBookings(reservation.getMemberId());
+        MemberBookingDto member = memberClient.decrementBookings(reservation.getMemberId());
+
+        // Si le membre était suspendu et repasse sous son quota, publier un événement Kafka
+        if (member.getActiveBookings() < member.getMaxConcurrentBookings()) {
+            eventProducer.publishMemberStatus(reservation.getMemberId(), false);
+        }
 
         return saved;
     }
